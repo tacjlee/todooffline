@@ -11,7 +11,6 @@ import { RootState } from "./store/index";
 import { withRoot } from "./withRoot";
 
 import {HeaderToolbar} from './components/HeaderToolbar';
-import {MainMenu} from './components/MainMenu';
 
 function Routes() {
 	const classes = useStyles();
@@ -27,22 +26,11 @@ function Routes() {
 
 function App() {
 	const classes = useStyles();
-	const todoList = useSelector((state: RootState) => state.todoList);
-
 	return (
 		<Router history={history}>
 			<div className={classes.root}>
 				<div className={classes.appFrame}>
 					<HeaderToolbar></HeaderToolbar>
-					<DrawerMui
-						variant="permanent"
-						open
-						classes={{
-							paper: classes.drawerPaper,
-						}}
-					>
-						<MainMenu todoList={todoList} />
-					</DrawerMui>
 					<Routes />
 				</div>
 			</div>
@@ -65,15 +53,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 		height: "100%",
 	},
 	
-	drawerPaper: {
-		width: 280,
-		backgroundColor: theme.palette.background.default,
-		[theme.breakpoints.up("md")]: {
-			width: drawerWidth,
-			position: "relative",
-			height: "100%",
-		},
-	},
 	content: {
 		backgroundColor: theme.palette.background.default,
 		width: "100%",

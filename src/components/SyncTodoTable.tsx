@@ -1,47 +1,51 @@
 // prettier-ignore
 import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
-import { connect } from 'react-redux';
 import { makeStyles } from "@material-ui/styles";
-import React, {useEffect} from "react";
-import { useSelector } from "react-redux";
-import { Todo } from "../store/todolist/types";
-import { RootState} from "../store";
-import { loadSyncTodoList} from "../store/synctodo/action";
+import React, {useEffect, useState} from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { todosRef } from "../firebase";
 
-const mapStateToProps = (state: RootState) => ({
-	syncTodoList: state.rootSyncTodo.syncTodoList
-});
-const mapDispatchToProps: any = {
-	loadSyncTodoList, // will be wrapped into a dispatch call automatically
-};
-type AllProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+//https://dev.to/gsto/new-redux-hooks-a-before-and-after-comparison-are-they-better-loj
+//https://topdev.vn/blog/lam-sao-de-fetch-du-lieu-bang-react-hook/
 
-const UnconnectedSyncTodoTable: React.FC<AllProps> =({ syncTodoList, loadSyncTodoList}) =>{
+
+export function SyncTodoTable() {
+	const dispatch = useDispatch();
 	const classes = useStyles();
-	useEffect(() => {
-		loadSyncTodoList();
-	}, [])
+	const [todos, setTodos] = useState<any>([]);
+	useEffect(()=>{
+		todosRef.on('value', (snapshot) => {
+			let items = snapshot.val();
+			let newState = [];
+			for (let item in items) {
+			  newState.push({
+				id: item,
+				text: items[item].text,
+				status: items[item].status
+			  });
+			}
+			setTodos(newState)
+		  });
+	},[]);
 
 	return (
 		<Paper className={classes.paper}>
 			<Table className={classes.table}>
 				<TableHead>
 					<TableRow>
-						<TableCell style={{width: '20%'}} padding="default">Mock Api Id</TableCell>
 						<TableCell style={{width: '20%'}} padding="default">Todo Id</TableCell>
 						<TableCell style={{width: '50%'}} padding="default">Text</TableCell>
 						<TableCell style={{width: '10%'}} padding="default">Status</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{syncTodoList.map((item: Todo) => {
+					{todos.map((item: any) => {
 						return (
 							<TableRow
-								key={item.todoId}
+								key={item.id}
 								hover
 							>
 								<TableCell >{item.id}</TableCell>
-								<TableCell >{item.todoId}</TableCell>
 								<TableCell >{item.text}</TableCell>
 								<TableCell padding="none">{item.status}</TableCell>
 							</TableRow>
@@ -67,5 +71,3 @@ const useStyles = makeStyles({
 		marginRight: 8
 	},
 });
-
-export const SyncTodoTable = connect( mapStateToProps, mapDispatchToProps)(UnconnectedSyncTodoTable);

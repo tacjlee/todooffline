@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { SyncTodoTable } from "../components";
 
-
 export function SyncTodoPage() {
 	const classes = useStyles();
 
@@ -20,12 +19,6 @@ export function SyncTodoPage() {
 			<Grid item xs={12}>
 				<SyncTodoTable />
 			</Grid>
-			
-			<span className={classes.marginRight5}>From MockAPI: </span>
-			<Link href="https://mockapi.io/projects/5f4dba46eeec51001608ee65" className={classes.linkColor}>
-				https://mockapi.io/projects/5f4dba46eeec51001608ee65 
-  			</Link>
-			
 		</Grid>
 	);
 }

@@ -6,15 +6,10 @@ import {RootState} from "../store";
 
 export function HomePage() {
 	const classes = useStyles();
-	const todoList = useSelector((state: RootState) => state.todoList);
-
 	return (
 		<div className={classes.root}>
 			<Typography variant="h4" gutterBottom>
 				Home Page
-			</Typography>
-			<Typography variant="h6" gutterBottom>
-				You have {todoList.length} TODOs in your list!
 			</Typography>
 		</div>
 	);

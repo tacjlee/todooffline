@@ -1,6 +1,6 @@
 export interface Todo {
-    id: number;
-    todoId: number;
+    id: string;
+    todoId: string;
     text: string;
     status: string;
     deleted: boolean;
@@ -14,7 +14,7 @@ export interface Todo {
     DELETE_TODO = "DELETE_TODO",
     DELETE_TODO_FORCE = "DELETE_TODO_FORCE",
     GET_TODOS = "GET_TODOS",
-
+    SET_TODOS = "SET_TODOS"
   }
   
   interface TodoActionType<T, P> {
@@ -24,10 +24,20 @@ export interface Todo {
   
   export type TodoAction =
     | TodoActionType<typeof TodoActions.ADD_TODO, Todo>
-    | TodoActionType<typeof TodoActions.START_TODO, number>
-    | TodoActionType<typeof TodoActions.DONE_TODO, number>
-    | TodoActionType<typeof TodoActions.CANCEL_TODO, number>
-    | TodoActionType<typeof TodoActions.DELETE_TODO, number>
-    | TodoActionType<typeof TodoActions.DELETE_TODO_FORCE, number>
+    | TodoActionType<typeof TodoActions.START_TODO, string>
+    | TodoActionType<typeof TodoActions.DONE_TODO, string>
+    | TodoActionType<typeof TodoActions.CANCEL_TODO, string>
+    | TodoActionType<typeof TodoActions.DELETE_TODO, string>
+    | TodoActionType<typeof TodoActions.DELETE_TODO_FORCE, string>
+    | TodoActionType<typeof TodoActions.SET_TODOS, Todo[]>
+    
   ;
   
+  //Add new  here
+  
+  export interface TodoState{
+	[x: string]: any;
+    readonly loading: boolean;
+    readonly todoList: Todo[];
+    readonly errors?: string;
+  }

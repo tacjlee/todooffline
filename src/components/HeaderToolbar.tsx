@@ -1,49 +1,25 @@
 import React from "react";
-import { AppBar, IconButton, Toolbar, Typography, useMediaQuery } from "@material-ui/core";
+import { AppBar, IconButton, Toolbar, Typography, useMediaQuery, Link } from "@material-ui/core";
 import { Theme } from "@material-ui/core/styles";
-import { RootState } from "../store";
-import { connect } from "react-redux";
-import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/styles";
 
 
-const mapStateToProps = (state: RootState) => ({
-  todolist: state.todoList,
-});
-
-const mapDispatchToProps = {  };
-type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
-
-const UnconnectedHeaderToolbar: React.FC<Props> = ({
-  todolist
-}) => {
+export function HeaderToolbar() {
     const classes = useStyles();
-	const [mobileOpen, setMobileOpen] = React.useState(true);
-	const isMobile = useMediaQuery((theme: Theme) =>
-		theme.breakpoints.down("sm")
-	);
-
-	const handleDrawerToggle = () => {
-		setMobileOpen(!mobileOpen);
-    };
     
     return (
         <AppBar className={classes.appBar}>
         <Toolbar>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerToggle}
-                className={classes.navIconHide}
-            >
-                <MenuIcon />
-            </IconButton>
             <Typography
                 variant="h6"
                 color="inherit"
-                noWrap={isMobile}
             >
-                Todo List
+				<Link href="/todo" style={{color: "white", marginRight: '20px'}}>
+					Todo List
+				</Link>
+				<Link href="/synctodo" style={{color: "white"}}>
+					Firebase data
+				</Link>
             </Typography>
         </Toolbar>
         </AppBar>
@@ -84,8 +60,3 @@ const useStyles = makeStyles((theme: Theme) => ({
 		},
 	},
 }));
-
-export const HeaderToolbar = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UnconnectedHeaderToolbar);

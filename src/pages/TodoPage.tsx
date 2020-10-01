@@ -13,7 +13,6 @@ export function TodoPage() {
 	const [open, setOpen] = React.useState(false);
 
 	const syncService = new TodoSyncService();
-	const todoList = useSelector((state: RootState) => state.todoList);
 
 	const handleClose = () => {
 		setOpen(false);

@@ -3,7 +3,7 @@ import axios from "axios";
 import CacheManager from "../cache/CacheManager";
 
 export default class TodoSyncService {
-    public BaseUrl: string = "https://5f4dba46eeec51001608ee64.mockapi.io/todo/v1";
+    public static FirebaseUrl: string = "https://todo-8c6a0.firebaseio.com/todos.json";
     
     initializeServiceWorker(event: any) {
         if(event){
@@ -52,7 +52,7 @@ export default class TodoSyncService {
                     "text": todo.text,
                     "status": todo.status
                 }
-                axios.post("https://5f4dba46eeec51001608ee64.mockapi.io/todo/v1/todo", data)      
+                axios.post(TodoSyncService.FirebaseUrl, data)      
                 .then((response) => {
                     
                 })

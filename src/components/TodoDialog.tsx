@@ -5,6 +5,7 @@ import * as React from "react";
 import { useActions } from "../hooks";
 import * as TodoActions from "../store/todolist/action";
 
+
 interface Props {
 	open: boolean;
 	onClose: () => void;
@@ -19,7 +20,7 @@ export function TodoDialog(props: Props) {
 	const handleClose = () => {
 		if(newTodoText.length >0){
 			todoActions.addTodo({
-				id: Date.now(),
+				todoId: Date.now(),
 				deleted: false,
 				status: 'Todo',
 				text: newTodoText,

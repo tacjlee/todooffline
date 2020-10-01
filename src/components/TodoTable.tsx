@@ -6,18 +6,39 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import { makeStyles } from "@material-ui/styles";
-import React from "react";
 import { useSelector } from "react-redux";
+import React, {useEffect, useState} from "react";
 import { useActions } from "../hooks";
+import {RootState} from "../store";
 
 import * as TodoActions from "../store/todolist/action";
+
 import { Todo } from "../store/todolist/types";
-import {RootState} from "../store";
+import { todosRef } from "../firebase";
+
 
 export function TodoTable() {
 	const classes = useStyles();
-	const todoList = useSelector((state: RootState) => state.todoList);
+	const todoList = useSelector((state: RootState) => state.todoReducer.todoList);
 	const todoActions = useActions(TodoActions);
+	
+	const [todos, setTodoList] = useState<any>([]);
+	useEffect(()=>{
+		todosRef.on('value', (snapshot) => {
+			let items = snapshot.val();
+			let newState = [];
+			for (let item in items) {
+			  newState.push({
+				id: item,
+				text: items[item].text,
+				status: items[item].status
+			  });
+			}
+			//setTodoList(newState)
+			todoActions.setTodos(newState);
+		  });
+	},[]);
+
 
 	const onRowClick = (todo: Todo) => {
 		//Put your code here
@@ -28,7 +49,8 @@ export function TodoTable() {
 			<Table className={classes.table}>
 				<TableHead>
 					<TableRow>
-						<TableCell style={{width: '60%'}} padding="default">Text</TableCell>
+						<TableCell style={{width: '20%'}} padding="default">Id</TableCell>
+						<TableCell style={{width: '40%'}} padding="default">Text</TableCell>
 						<TableCell style={{width: '20%'}} padding="default">Status</TableCell>
 						<TableCell style={{width: '20%'}} padding="default">Actions</TableCell>
 					</TableRow>
@@ -41,6 +63,7 @@ export function TodoTable() {
 								hover
 								onClick={event => onRowClick(item)}
 							>
+								<TableCell >{item.id}</TableCell>
 								<TableCell >{item.text}</TableCell>
 								<TableCell padding="none">{item.status}</TableCell>
 								<TableCell padding="none">
@@ -108,9 +131,9 @@ export function TodoTable() {
 													aria-label="Delete"
 													color="secondary"
 													variant="outlined"
-													onClick={() =>
-														todoActions.deleteTodo(item.id)
-													}
+													// onClick={() =>
+													// 	todoActions.deleteTodo(item.id)
+													// }
 												>
 													<DeleteIcon />
 												</Button>	
